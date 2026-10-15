@@ -67,3 +67,21 @@ class CandidateService:
         except Exception:
             self.db.rollback()
             raise
+
+    def save_cv_text(
+        self,
+        candidate_id: uuid.UUID,
+        cv_text: str,
+    ) -> Candidate:
+
+        candidate = self.get_by_id(candidate_id)
+
+        candidate.cv_text = cv_text
+
+        try:
+            self.db.commit()
+            self.db.refresh(candidate)
+            return candidate
+        except Exception:
+            self.db.rollback()
+            raise

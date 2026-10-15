@@ -29,3 +29,9 @@ class CandidateResponse(CandidateBase):
     created_at: datetime
 
     model_config = ConfigDict(from_attributes=True)
+
+class CVUploadResponse(BaseModel):
+    candidate_id: uuid.UUID
+    filename: str
+    characters_extracted: int
+    message: str
