@@ -2,12 +2,18 @@ from fastapi import Depends, FastAPI
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 
+from app.api.v1.candidates import router as candidates_router
 from app.db.session import get_db
 
 app = FastAPI(
     title="TalentIQ API",
     description="AI-powered recruitment platform",
     version="0.1.0",
+)
+
+app.include_router(
+    candidates_router,
+    prefix="/api/v1",
 )
 
 
