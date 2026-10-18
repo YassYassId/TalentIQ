@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 
 from app.api.v1.candidates import router as candidates_router
 from app.db.session import get_db
+from app.api.v1.search import router as search_router
 
 app = FastAPI(
     title="TalentIQ API",
@@ -13,6 +14,11 @@ app = FastAPI(
 
 app.include_router(
     candidates_router,
+    prefix="/api/v1",
+)
+
+app.include_router(
+    search_router,
     prefix="/api/v1",
 )
 
