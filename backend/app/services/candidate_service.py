@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 from app.models.candidate import Candidate
 from app.repositories.candidate_repository import CandidateRepository
 from app.schemas.candidate import CandidateCreate, CandidateUpdate
+from app.services.cv_indexing_service import CVIndexingService
 
 
 class CandidateNotFoundError(Exception):
@@ -76,12 +77,21 @@ class CandidateService:
 
         candidate = self.get_by_id(candidate_id)
 
-        candidate.cv_text = cv_text
-
         try:
+            indexing_service = CVIndexingService(self.db)
+
+            indexing_service.index_cv(
+                candidate_id=candidate_id,
+                cv_text=cv_text,
+            )
+
+            candidate.cv_text = cv_text
+
             self.db.commit()
             self.db.refresh(candidate)
+
             return candidate
+
         except Exception:
             self.db.rollback()
             raise
